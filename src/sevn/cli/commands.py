@@ -9,7 +9,7 @@ import signal
 import tempfile
 import subprocess
 from typing import List, Optional
-from core.profiles import ProfileManager
+from ..core.profiles import ProfileManager
 import random
 
 SEVEN_SINS = [

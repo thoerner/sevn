@@ -4,7 +4,7 @@ Main entry point for the sevn CLI.
 """
 
 import sys
-from cli.commands import CommandHandler, create_parser
+from .commands import CommandHandler, create_parser
 
 def main():
     """Main entry point for sevn."""
