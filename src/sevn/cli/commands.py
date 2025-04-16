@@ -19,7 +19,7 @@ SEVEN_SINS = [
     "ENVY='Why does their .env have more secrets?'",
     "GLUTTONY='I need more environment variables'",
     "WRATH='Who committed the .env file?!'",
-    "SLOTH='I'll rotate these keys later...'"
+    "SLOTH='I’ll rotate these keys later...'"
 ]
 
 EXAMPLES = """
