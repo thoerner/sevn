@@ -1,113 +1,117 @@
-# Envault
+# sevn 🔐
 
-A secure environment variable manager that stores secrets in encrypted files and loads them only when needed.
+A secure environment variable manager built on 7 core principles.
 
-## Features
+## The Seven Principles
 
-- 🔒 Secure storage of environment variables using GPG encryption
-- 🔑 Profile-based secret management
-- 🐚 Load secrets into current shell or spawn a new secure shell session
-- 🧹 No modification of shell startup files (`.bashrc`, etc.)
-- 📝 Simple CLI interface for managing secrets
+- 🔒 **Secure** – secrets stay local and encrypted
+- 🎯 **Simple** – install and go, no setup hell
+- 🎭 **Scoped** – use profiles, isolate secrets
+- 🔧 **Script** – CLI-first, shell-native
+- 📦 **Share** – encrypted blob = portable
+- ⚡ **Speed** – decrypt only what you need
+- 🌐 **State** – no server, no risk surface
 
 ## Installation
 
-### Option 1: Install from PyPI (Recommended)
 ```bash
-# Install system-wide (requires sudo)
-sudo pip install envault
-
-# Or install for current user only
-pip install --user envault
+pip install sevn
 ```
 
-### Option 2: Install from source
+Requires Python 3.9 or higher.
+
+## Quick Start
+
+1. Lock a secret in a profile:
 ```bash
-# Clone the repository
-git clone https://github.com/thoerner/envault.git
-cd envault
-
-# Install system-wide (requires sudo)
-sudo pip install .
-
-# Or install for current user only
-pip install --user .
+sevn lock STRIPE_KEY=sk_test_123 --profile myproject
 ```
 
-### Shell Integration (Optional)
-For better shell integration, add this to your `.bashrc` or `.zshrc`:
+2. List all profiles:
+```bash
+sevn list
+```
+
+3. Load secrets into your current shell:
+```bash
+eval "$(sevn unlock myproject)"
+```
+
+4. Or sign into a new shell with loaded secrets:
+```bash
+sevn sign myproject
+```
+
+## Commands
+
+### `lock` - Encrypt a secret
+```bash
+sevn lock KEY=VALUE --profile PROFILE_NAME
+```
+
+### `unlock` - Decrypt and load secrets
+```bash
+eval "$(sevn unlock PROFILE_NAME)"
+```
+
+### `sign` - Start a new shell with secrets
+```bash
+sevn sign PROFILE_NAME
+```
+
+### `list` - Show all profiles
+```bash
+sevn list
+```
+
+### `purge` - Remove secrets or profiles
+```bash
+# Remove a specific secret
+sevn purge PROFILE_NAME --key SECRET_KEY
+
+# Remove entire profile
+sevn purge PROFILE_NAME
+```
+
+### `init` - Initialize new profile
+```bash
+# Normal initialization
+sevn init
+
+# Fun mode: Initialize with the seven deadly sins
+sevn init --sin
+sevn init --sin --write  # Creates .env file
+```
+
+## Shell Integration
+
+Add this to your `.bashrc` or `.zshrc` for easier usage:
 
 ```bash
-# Function to load environment variables from a profile
-load_env() {
-    eval "$(envault load ${1:-default})"
+load_secrets() {
+    eval "$(sevn unlock ${1:-default})"
 }
 ```
 
 Then you can simply use:
 ```bash
-load_env myproject
+load_secrets myproject
 ```
-
-## Usage
-
-### Managing Profiles
-
-1. Set a secret in a profile:
-   ```bash
-   envault set STRIPE_KEY=sk_test_123 --profile myproject
-   envault set JWT_SECRET=secret123 --profile myproject
-   ```
-
-2. List available profiles:
-   ```bash
-   envault list
-   ```
-
-3. Delete a secret from a profile:
-   ```bash
-   envault delete myproject --key STRIPE_KEY
-   ```
-
-4. Delete an entire profile:
-   ```bash
-   envault delete myproject
-   ```
-
-### Loading Secrets
-
-1. Print export commands (for use with eval):
-   ```bash
-   eval "$(envault load myproject)"
-   ```
-
-2. Spawn a new shell with the profile's environment variables:
-   ```bash
-   envault load myproject --shell
-   ```
 
 ## Security
 
-- All secrets are stored in GPG-encrypted files under `~/.apivault/profiles/`
-- Files are encrypted using symmetric encryption (requires password)
-- Temporary files are secured with appropriate permissions (600)
-- No secrets are written to shell startup files
-- Secrets are only decrypted when explicitly loaded
-
-## File Structure
-
-```
-~/.apivault/
-├── profiles/
-│   ├── myproject.env.gpg
-│   ├── anotherproject.env.gpg
-```
+- All secrets are encrypted locally using strong cryptography
+- No external servers or cloud storage
+- Each profile is isolated and separately encrypted
+- Temporary files are securely cleaned up
+- Secrets never touch disk in plaintext
 
 ## Requirements
 
-- Python 3.8 or later
-- GPG (gnupg) installed on the system
-- Linux/Unix-based operating system
+- Python >=3.9
+- cryptography >=41.0.0
+- pyyaml >=6.0.1
+- python-dotenv >=1.0.0
 
 ## License
 

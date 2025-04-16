@@ -1,42 +1,38 @@
 """
-Setup configuration for the environment variable manager.
+Setup configuration for sevn - the secure environment variable manager.
 """
 
 from setuptools import setup, find_packages
 
 setup(
-    name="envault",
+    name="sevn",
     version="1.0.0",
-    description="Secure environment variable manager",
-    author="Tim",
-    author_email="tim@example.com",
-    packages=find_packages("src"),
+    description="A secure environment variable manager",
+    author="Tim Hoerner",
+    author_email="thoerner@gmail.com",
     package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    install_requires=[
+        "cryptography>=41.0.0",
+        "pyyaml>=6.0.1",
+        "python-dotenv>=1.0.0",
+    ],
     entry_points={
         "console_scripts": [
-            "envault=cli.main:main",
+            "sevn=cli.main:main",
         ],
     },
-    python_requires=">=3.8",
-    install_requires=[
-        # No external dependencies required
-    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Topic :: Security",
-        "Topic :: System :: Systems Administration",
-        "Topic :: Utilities",
+        "Topic :: Software Development",
     ],
-    package_data={
-        "": ["py.typed"],
-    },
+    python_requires=">=3.9",
 ) 
