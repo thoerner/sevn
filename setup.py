@@ -10,6 +10,11 @@ setup(
     description="A secure environment variable manager",
     author="Tim Hoerner",
     author_email="thoerner@gmail.com",
+    url="https://github.com/thoerner/sevn",
+    project_urls={
+        "Bug Reports": "https://github.com/thoerner/sevn/issues",
+        "Source": "https://github.com/thoerner/sevn",
+    },
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     install_requires=[

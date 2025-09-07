@@ -14,7 +14,13 @@ A secure environment variable manager built on 7 core principles.
 
 ## Installation
 
-### Quick Start (Recommended)
+### From PyPI (Recommended)
+```bash
+pip install sevn
+sevn --help
+```
+
+### From Source
 ```bash
 git clone https://github.com/thoerner/sevn.git
 cd sevn
@@ -22,7 +28,7 @@ chmod +x sevn
 ./sevn --help
 ```
 
-### From Source
+### Development Installation
 ```bash
 git clone https://github.com/thoerner/sevn.git
 cd sevn
