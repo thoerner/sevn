@@ -20,6 +20,13 @@ pip install sevn
 sevn --help
 ```
 
+### From GitHub Release
+```bash
+# Download from: https://github.com/thoerner/sevn/releases
+pip install sevn-1.0.2-py3-none-any.whl
+sevn --help
+```
+
 ### From Source
 ```bash
 git clone https://github.com/thoerner/sevn.git
