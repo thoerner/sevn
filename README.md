@@ -14,73 +14,85 @@ A secure environment variable manager built on 7 core principles.
 
 ## Installation
 
+### Quick Start (Recommended)
 ```bash
-pip install sevn
+git clone https://github.com/thoerner/sevn.git
+cd sevn
+chmod +x sevn
+./sevn --help
 ```
 
-Requires Python 3.9 or higher.
+### From Source
+```bash
+git clone https://github.com/thoerner/sevn.git
+cd sevn
+python3 -m pip install .
+sevn --help
+```
+
+Requires Python 3.9 or higher and GPG.
 
 ## Quick Start
 
 1. Lock a secret in a profile:
 ```bash
-sevn lock STRIPE_KEY=sk_test_123 --profile myproject
+./sevn lock STRIPE_KEY=sk_test_123 --profile myproject
 ```
 
 2. List all profiles:
 ```bash
-sevn list
+./sevn list
 ```
 
 3. Load secrets into your current shell:
 ```bash
-eval "$(sevn unlock myproject)"
+eval "$(./sevn unlock myproject)"
 ```
 
 4. Or sign into a new shell with loaded secrets:
 ```bash
-sevn sign myproject
+./sevn sign myproject
 ```
 
 ## Commands
 
 ### `lock` - Encrypt a secret
 ```bash
-sevn lock KEY=VALUE --profile PROFILE_NAME
+./sevn lock KEY=VALUE --profile PROFILE_NAME
 ```
 
 ### `unlock` - Decrypt and load secrets
 ```bash
-eval "$(sevn unlock PROFILE_NAME)"
+eval "$(./sevn unlock PROFILE_NAME)"
 ```
 
 ### `sign` - Start a new shell with secrets
 ```bash
-sevn sign PROFILE_NAME
+./sevn sign PROFILE_NAME
 ```
 
 ### `list` - Show all profiles
 ```bash
-sevn list
+./sevn list
 ```
 
 ### `purge` - Remove secrets or profiles
 ```bash
 # Remove a specific secret
-sevn purge PROFILE_NAME --key SECRET_KEY
+./sevn purge PROFILE_NAME --key SECRET_KEY
 
 # Remove entire profile
-sevn purge PROFILE_NAME
+./sevn purge PROFILE_NAME
 ```
 
 ### `init` - Initialize new profile
 ```bash
 # Normal initialization
-sevn init
+./sevn init
 
 # Fun mode: Initialize with the seven deadly sins
-sevn init --sin
-sevn init --sin --write  # Creates .env file
+./sevn init --sin
+./sevn init --sin --write  # Creates .env file
 ```
 
 ## Shell Integration
@@ -89,7 +101,7 @@ Add this to your `.bashrc` or `.zshrc` for easier usage:
 
 ```bash
 load_secrets() {
-    eval "$(sevn unlock ${1:-default})"
+    eval "$(./sevn unlock ${1:-default})"
 }
 ```
 

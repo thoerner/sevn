@@ -132,12 +132,16 @@ class CommandHandler:
         profile_name = args.profile
         key, value = args.key_value.split('=', 1)
         
-        if self.profile_manager.set_variable(profile_name, key, value):
-            print(f"🔒 Secret locked in profile \"{profile_name}\"")
-            return 0
-        else:
-            print(f"Error: Failed to lock secret in profile '{profile_name}'",
-                  file=sys.stderr)
+        try:
+            if self.profile_manager.set_variable(profile_name, key, value):
+                print(f"🔒 Secret locked in profile \"{profile_name}\"")
+                return 0
+            else:
+                print(f"Error: Failed to lock secret in profile '{profile_name}'",
+                      file=sys.stderr)
+                return 1
+        except Exception as e:
+            print(f"Error: {str(e)}", file=sys.stderr)
             return 1
 
     def list(self, args: argparse.Namespace) -> int:

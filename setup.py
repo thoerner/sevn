@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sevn",
-    version="1.0.0",
+    version="1.0.2",
     description="A secure environment variable manager",
     author="Tim Hoerner",
     author_email="thoerner@gmail.com",
@@ -19,7 +19,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "sevn=cli.main:main",
+            "sevn=sevn:main",
         ],
     },
     classifiers=[

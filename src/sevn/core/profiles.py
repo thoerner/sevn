@@ -4,6 +4,7 @@ Handles the storage and retrieval of environment variable profiles.
 """
 
 import os
+import sys
 import json
 import tempfile
 import subprocess
@@ -70,7 +71,14 @@ class ProfileManager:
         env_vars[key] = value
         
         # Save the updated profile
-        return self.create_profile(profile_name, env_vars)
+        try:
+            result = self.create_profile(profile_name, env_vars)
+            if not result:
+                print(f"Failed to create profile {profile_name}", file=sys.stderr)
+            return result
+        except Exception as e:
+            print(f"Exception in create_profile: {str(e)}", file=sys.stderr)
+            return False
 
     def delete_variable(self, profile_name: str, key: str) -> bool:
         """

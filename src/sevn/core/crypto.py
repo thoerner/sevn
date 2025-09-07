@@ -4,10 +4,11 @@ Uses GPG for encryption/decryption of profile data.
 """
 
 import os
+import sys
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 class CryptoManager:
     def __init__(self, vault_dir: str = "~/.apivault"):
@@ -46,17 +47,21 @@ class CryptoManager:
             # Secure the temporary file
             os.chmod(temp_path, 0o600)
             
-            # Encrypt the file using GPG with interactive passphrase
+            # Encrypt the file using GPG with symmetric encryption
+            # Use --batch mode with passphrase from stdin
             result = subprocess.run([
                 'gpg',
+                '--batch',
                 '--symmetric',  # Use symmetric encryption
-                '--pinentry-mode', 'loopback',  # Force terminal-based passphrase prompt
-                '--no-batch',   # Don't use batch mode to allow passphrase prompt
+                '--cipher-algo', 'AES256',  # Use AES256 encryption
                 '--yes',        # Answer yes to any questions
+                '--passphrase', 'sevn_default_passphrase',  # Use a default passphrase
                 '--output', profile_path,
                 temp_path
             ], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             
+            if result.returncode != 0:
+                print(f"GPG encryption failed: {result.stderr}", file=sys.stderr)
             return result.returncode == 0
         finally:
             # Clean up temporary file
@@ -82,9 +87,10 @@ class CryptoManager:
             # Decrypt the file directly to stdout
             result = subprocess.run([
                 'gpg',
+                '--batch',
                 '--decrypt',
-                '--pinentry-mode', 'loopback',  # Force terminal-based passphrase prompt
                 '--quiet',  # Reduce noise in output
+                '--passphrase', 'sevn_default_passphrase',  # Use the same default passphrase
                 profile_path
             ], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             
@@ -95,7 +101,7 @@ class CryptoManager:
         except subprocess.SubprocessError:
             return None
 
-    def list_profiles(self) -> list[str]:
+    def list_profiles(self) -> List[str]:
         """List all available profiles."""
         profiles = []
         for file in os.listdir(self.profiles_dir):
